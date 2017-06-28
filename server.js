@@ -18,8 +18,8 @@ app.get('/todos',function(req,res){
 });
 app.get('/todos/:id',function(req,res){
 	
-	var todoid = parseInt(req.params.id,10);
-	var matchedTodo = _.findwhere(todos, {id: todoId});
+	var todoId = parseInt(req.params.id,10);
+	var matchedTodo = _.findWhere(todos, {id: todoId});
     if(matchedTodo){
     	res.json(matchedTodo);
     }
@@ -43,6 +43,20 @@ app.post('/todos',function(req,res){
     todos.push(body);
 	res.send(body);
 
+});
+app.delete('/todos/:id',function(req,res){
+    var todoId = parseInt(req.params.id,10);
+	var matchedTodo = _.findWhere(todos, {id: todoId});
+	if(!matchedTodo)
+    {
+    	res.status(404).json({"error":"no todo found with that id"});
+    }
+    else
+    {
+    	todos = _.without(todos,matchedTodo);
+    	res.json(matchedTodo);
+	    console.log('Successfully removed');
+	}
 });
 app.listen(PORT,function(){
   console.log('App listening at port ' + PORT);
